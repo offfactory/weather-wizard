@@ -14,7 +14,7 @@ function createWindow() {
     minHeight: 650,
     title: "Weather Wizard",
     backgroundColor: "#091525",
-    icon: path.join(__dirname, "../build/icon.ico"),
+    icon: path.join(__dirname, "../public/weather-logo.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,

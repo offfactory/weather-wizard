@@ -10,6 +10,7 @@ Weather Wizard is a polished Windows desktop weather app by **OFF FACTORY**.
 - Credits tab with OFF FACTORY branding and GitHub profile link
 - Windows `.exe` launcher and NSIS wizard installer configuration
 - GitHub Actions workflow to build the Windows installer on `windows-latest`
+- SVG app logo used for launcher and installer branding
 
 ## Development
 
