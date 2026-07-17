@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { CloudSun, Code2, Compass, Mail, PlayCircle, Search, Settings, ShieldCheck, Sparkles, Wand2 } from "lucide-react";
-import { describeWeather, findPlace, loadWeather, Place, WeatherReport, weatherIcon } from "./weather";
+import { describeWeather, findPlace, loadWeather, Place, reversePlace, WeatherReport, weatherIcon } from "./weather";
 
 type Tab = "home" | "weather" | "settings" | "credits";
 type AuthProvider = "Google" | "Discord" | "Email" | "Guest";
@@ -28,6 +28,7 @@ export default function App() {
   const [report, setReport] = useState<WeatherReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [permissionNote, setPermissionNote] = useState("Location and weather notifications are optional.");
 
   const subtitle = useMemo(() => `Weather Switch by ${creatorName}`, [creatorName]);
 
@@ -67,6 +68,49 @@ export default function App() {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Search failed.");
       setLoading(false);
+    }
+  }
+
+  async function useMyLocation() {
+    if (!navigator.geolocation) {
+      setError("Location is not supported on this device.");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    setPermissionNote("Waiting for location permission...");
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const place = await reversePlace(position.coords.latitude, position.coords.longitude);
+          setQuery(place.name);
+          await load(place);
+          setPermissionNote(`Using weather near ${place.name}.`);
+        } catch (err) {
+          setError(err instanceof Error ? err.message : "Could not load your location weather.");
+          setLoading(false);
+        }
+      },
+      () => {
+        setError("Location permission was denied. You can still search a city.");
+        setPermissionNote("Location permission denied.");
+        setLoading(false);
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+    );
+  }
+
+  async function enableNotifications() {
+    if (!("Notification" in window)) {
+      setPermissionNote("Notifications are not supported on this device.");
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      setPermissionNote("Weather notifications are allowed.");
+      if (report) new Notification("Weather Wizard", { body: `${report.place.name}: ${report.current.temperature}° and ${describeWeather(report.current.code)}` });
+    } else {
+      setPermissionNote("Notifications are not allowed yet.");
     }
   }
 
@@ -113,6 +157,8 @@ export default function App() {
           <button type="submit" disabled={loading || !weatherSwitch}>{loading ? "Casting..." : "Cast forecast"}</button>
         </form>
 
+        <button className="location-button" onClick={useMyLocation}>Use my location</button>
+
         <div className="mini-card">
           <Wand2 size={20} />
           <div>
@@ -127,8 +173,8 @@ export default function App() {
       </aside>
 
       <section className="content panel">
-        {tab === "home" && <HomeTab appName={appName} creatorName={creatorName} signedIn={signedIn} signedInWith={signedInWith} onSignIn={signIn} onStart={() => setTab(signedIn ? "weather" : "home")} />}
-        {tab === "weather" && (signedIn ? <WeatherTab report={report} loading={loading} error={error} enabled={weatherSwitch} /> : <HomeTab appName={appName} creatorName={creatorName} signedIn={signedIn} signedInWith={signedInWith} onSignIn={signIn} onStart={() => setTab("home")} />)}
+        {tab === "home" && <HomeTab appName={appName} creatorName={creatorName} signedIn={signedIn} signedInWith={signedInWith} onSignIn={signIn} onStart={() => setTab(signedIn ? "weather" : "home")} onUseLocation={useMyLocation} onEnableNotifications={enableNotifications} permissionNote={permissionNote} />}
+        {tab === "weather" && (signedIn ? <WeatherTab report={report} loading={loading} error={error} enabled={weatherSwitch} onUseLocation={useMyLocation} onEnableNotifications={enableNotifications} permissionNote={permissionNote} /> : <HomeTab appName={appName} creatorName={creatorName} signedIn={signedIn} signedInWith={signedInWith} onSignIn={signIn} onStart={() => setTab("home")} onUseLocation={useMyLocation} onEnableNotifications={enableNotifications} permissionNote={permissionNote} />)}
         {tab === "settings" && (
           <SettingsTab
             appName={appName}
@@ -147,7 +193,7 @@ export default function App() {
   );
 }
 
-function HomeTab({ appName, creatorName, signedIn, signedInWith, onSignIn, onStart }: { appName: string; creatorName: string; signedIn: boolean; signedInWith: string; onSignIn: (provider: AuthProvider) => void; onStart: () => void }) {
+function HomeTab({ appName, creatorName, signedIn, signedInWith, onSignIn, onStart, onUseLocation, onEnableNotifications, permissionNote }: { appName: string; creatorName: string; signedIn: boolean; signedInWith: string; onSignIn: (provider: AuthProvider) => void; onStart: () => void; onUseLocation: () => void; onEnableNotifications: () => void; permissionNote: string }) {
   return (
     <div className="home-page">
       <section className="wizard-hero">
@@ -179,6 +225,12 @@ function HomeTab({ appName, creatorName, signedIn, signedInWith, onSignIn, onSta
         <button className="primary-wide" onClick={onStart}>{signedIn ? "Open Weather Wizard" : "Pick a sign-in option above"}</button>
       </section>
 
+      <section className="permission-panel">
+        <button onClick={onUseLocation}>Allow location weather</button>
+        <button onClick={onEnableNotifications}>Allow weather notifications</button>
+        <span>{permissionNote}</span>
+      </section>
+
       <section className="wizard-strip">
         <div><strong>Wizard style</strong><span>Dark glass UI, magic weather icon, installer-ready identity.</span></div>
         <div><strong>Desktop launcher</strong><span>Electron app with custom Weather Wizard `.exe` icon.</span></div>
@@ -188,7 +240,7 @@ function HomeTab({ appName, creatorName, signedIn, signedInWith, onSignIn, onSta
   );
 }
 
-function WeatherTab({ report, loading, error, enabled }: { report: WeatherReport | null; loading: boolean; error: string; enabled: boolean }) {
+function WeatherTab({ report, loading, error, enabled, onUseLocation, onEnableNotifications, permissionNote }: { report: WeatherReport | null; loading: boolean; error: string; enabled: boolean; onUseLocation: () => void; onEnableNotifications: () => void; permissionNote: string }) {
   if (!enabled) {
     return <EmptyState title="Weather Switch is off" body="Turn it on in Settings to load live forecasts." />;
   }
@@ -209,6 +261,11 @@ function WeatherTab({ report, loading, error, enabled }: { report: WeatherReport
           <Metric label="Wind" value={`${report.current.wind} mph`} />
           <Metric label="Humidity" value={`${report.current.humidity}%`} />
           <Metric label="Updated" value={new Date(report.current.time).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })} />
+        </div>
+        <div className="weather-actions">
+          <button onClick={onUseLocation}>Use my location</button>
+          <button onClick={onEnableNotifications}>Allow notifications</button>
+          <span>{permissionNote}</span>
         </div>
       </section>
 

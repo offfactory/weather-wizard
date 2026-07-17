@@ -8,7 +8,8 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "build": "vite build && tsc -p tsconfig.node.json",
+    "build": "tsc --noEmit && vite build && tsc -p tsconfig.node.json",
+    "build:web": "vite build --mode web --outDir site-dist",
     "dist": "npm run build && electron-builder",
     "dist:win": "npm run build && electron-builder --win nsis",
     "check": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit",
@@ -34,6 +35,7 @@
   "build": {
     "appId": "com.offfactory.weatherwizard",
     "productName": "Weather Wizard",
+    "executableName": "Weather Wizard",
     "directories": {
       "output": "release",
       "buildResources": "build"

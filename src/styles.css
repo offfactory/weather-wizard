@@ -8,7 +8,7 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; min-width: 900px; min-height: 100vh; overflow: hidden; }
+body { margin: 0; min-width: 320px; min-height: 100vh; overflow: hidden; }
 button, input { font: inherit; }
 
 .app-shell {
@@ -64,13 +64,14 @@ h1 { margin-bottom: 4px; font-size: 1.55rem; }
 .search-row { display: flex; align-items: center; gap: 10px; background: rgba(4, 13, 25, 0.48); border: 1px solid rgba(255,255,255,0.12); padding: 10px 12px; border-radius: 16px; }
 input { width: 100%; color: #eff7ff; background: transparent; border: 0; outline: 0; font-size: 1rem; }
 .search-card button { width: 100%; margin-top: 12px; background: linear-gradient(135deg, #31b6ff, #ffd15c); color: #07101f; font-weight: 900; }
+.location-button { border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; background: rgba(130,216,255,0.12); color: #dff4ff; padding: 13px 15px; cursor: pointer; font-weight: 900; }
 .search-card button:disabled { opacity: 0.55; cursor: not-allowed; }
 .mini-card { display: flex; gap: 12px; color: #d9eeff; }
 .mini-card p { margin: 5px 0 0; color: #a9bed2; font-size: 0.9rem; line-height: 1.45; }
 .signout-button { border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; background: rgba(255,255,255,0.07); color: #dff4ff; padding: 12px 14px; cursor: pointer; }
 
 .content { padding: 26px; overflow: hidden; }
-.home-page { height: 100%; display: grid; grid-template-rows: auto auto 1fr; gap: 18px; }
+.home-page { height: 100%; display: grid; grid-template-rows: auto auto auto 1fr; gap: 18px; }
 .wizard-hero { display: flex; justify-content: space-between; align-items: center; gap: 24px; min-height: 245px; border-radius: 28px; padding: 28px; background: linear-gradient(135deg, rgba(38,177,255,0.24), rgba(255,203,87,0.16)); border: 1px solid rgba(255,255,255,0.16); overflow: hidden; }
 .wizard-hero h2 { font-size: 4.8rem; line-height: 0.92; margin: 8px 0 12px; letter-spacing: -0.08em; }
 .home-copy { color: #c8d9e7; font-size: 1.15rem; max-width: 560px; line-height: 1.55; }
@@ -86,6 +87,10 @@ input { width: 100%; color: #eff7ff; background: transparent; border: 0; outline
 .auth-grid button, .primary-wide { border: 0; cursor: pointer; border-radius: 18px; padding: 14px 15px; font-weight: 900; }
 .auth-grid button { display: flex; align-items: center; gap: 10px; justify-content: center; background: rgba(255,255,255,0.09); color: #eff7ff; border: 1px solid rgba(255,255,255,0.11); }
 .primary-wide { grid-column: 2; width: 100%; background: linear-gradient(135deg, #31b6ff, #ffd15c); color: #07101f; }
+.permission-panel, .weather-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.11); padding: 14px; }
+.permission-panel button, .weather-actions button { border: 0; border-radius: 14px; padding: 11px 13px; cursor: pointer; background: rgba(255,255,255,0.1); color: #eff7ff; font-weight: 900; }
+.permission-panel span, .weather-actions span { color: #a9bed2; }
+.weather-actions { margin-top: 16px; background: rgba(3, 12, 22, 0.2); }
 .wizard-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-content: start; }
 .wizard-strip div { background: rgba(4,13,25,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 15px; }
 .wizard-strip strong, .wizard-strip span { display: block; }
@@ -129,3 +134,23 @@ input { width: 100%; color: #eff7ff; background: transparent; border: 0; outline
 .empty { min-height: 520px; display: grid; place-content: center; text-align: center; color: #c7d9e8; }
 .empty svg { margin: 0 auto 16px; color: #ffd15c; }
 .empty h2 { color: #fff; margin-bottom: 8px; }
+
+@media (max-width: 900px) {
+  body { overflow: auto; }
+  .app-shell { min-height: 100vh; display: block; padding: 12px; overflow: auto; }
+  .sidebar { margin-bottom: 14px; }
+  .content { min-height: 60vh; overflow: visible; }
+  .brand-lockup { align-items: flex-start; }
+  .home-page, .weather-grid { height: auto; display: grid; }
+  .wizard-hero { display: grid; text-align: left; }
+  .wizard-hero h2 { font-size: 3rem; }
+  .hero-logo { width: 118px; height: 118px; }
+  .auth-panel { grid-template-columns: 1fr; }
+  .primary-wide { grid-column: 1; }
+  .auth-grid, .wizard-strip, .hour-row { grid-template-columns: 1fr; }
+  .weather-mark { position: static; font-size: 4rem; }
+  .hero-weather h2 { font-size: 4rem; }
+  .metric-row { flex-direction: column; }
+  .day-card { grid-template-columns: 1fr; text-align: left; }
+  .day-card strong { text-align: left; }
+}

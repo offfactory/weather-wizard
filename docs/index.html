@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Weather Wizard by OFF FACTORY</title>
+    <meta name="description" content="Download Weather Wizard, a desktop weather app with local forecasts, notifications, and a wizard-style setup." />
+    <link rel="icon" href="./weather-logo.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top"><img src="./weather-logo.svg" alt="Weather Wizard icon" /> Weather Wizard</a>
+      <nav>
+        <a href="#download">Download</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#setup">Setup</a>
+        <a href="https://github.com/offfactory/weather-wizard">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">OFF FACTORY desktop weather</p>
+          <h1>Weather Wizard tells you the weather where you live.</h1>
+          <p>Search any city, allow your location for local weather, and enable notifications for quick weather alerts. Built as a Windows `.exe` with a wizard-style setup.</p>
+          <div class="hero-actions" id="download">
+            <a class="button primary" href="https://github.com/offfactory/weather-wizard/releases/latest/download/Weather-Wizard-Setup.exe">Download Weather Wizard.exe</a>
+            <a class="button" href="https://github.com/offfactory/weather-wizard/actions/workflows/build-windows.yml">Installer builds</a>
+          </div>
+          <small>If the release download is not ready yet, open Installer builds and download the latest workflow artifact.</small>
+        </div>
+        <div class="app-shot" aria-label="Weather Wizard app screenshot mockup">
+          <div class="shot-sidebar"><img src="./weather-logo.svg" alt="" /><span>Home</span><span>Weather</span><span>Settings</span><span>Credits</span></div>
+          <div class="shot-main"><strong>72°</strong><p>Your location · Clear sky</p><div class="shot-grid"><span>Allow location</span><span>Allow notifications</span><span>7-day forecast</span></div></div>
+        </div>
+      </section>
+
+      <section class="cards" id="how-it-works">
+        <article><b>1</b><h2>Open the app</h2><p>Launch Weather Wizard.exe from your desktop or Start Menu after setup finishes.</p></article>
+        <article><b>2</b><h2>Allow location</h2><p>Click “Use my location” so Weather Wizard can show weather near where you live.</p></article>
+        <article><b>3</b><h2>Allow notifications</h2><p>Turn on notifications to get quick weather alerts and current-condition popups.</p></article>
+        <article><b>4</b><h2>Search anywhere</h2><p>Type a city name to cast a forecast for any place in the world.</p></article>
+      </section>
+
+      <section class="screen-records">
+        <div>
+          <p class="eyebrow">Screen records</p>
+          <h2>Setup walkthrough</h2>
+          <p>These visual walkthrough cards explain the setup flow until a recorded MP4 demo is added.</p>
+        </div>
+        <div class="record-grid">
+          <figure><div class="fake-video">▶ Download installer</div><figcaption>Download the `.exe` from GitHub Pages or the latest GitHub Actions artifact.</figcaption></figure>
+          <figure><div class="fake-video">▶ Run setup wizard</div><figcaption>Choose install location and let the NSIS wizard create shortcuts.</figcaption></figure>
+          <figure><div class="fake-video">▶ Use location weather</div><figcaption>Open Weather Wizard, allow location, then see your local forecast.</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="setup" id="setup">
+        <h2>How to install and use</h2>
+        <ol>
+          <li>Click <strong>Download Weather Wizard.exe</strong>.</li>
+          <li>Open the downloaded setup file. If Windows SmartScreen appears, choose “More info” then “Run anyway” because this build is unsigned.</li>
+          <li>Follow the setup wizard and keep “Create desktop shortcut” enabled.</li>
+          <li>Open <strong>Weather Wizard.exe</strong>.</li>
+          <li>Choose Guest mode, Google, Discord, or email on the home page.</li>
+          <li>Click <strong>Use my location</strong> to get weather where you live, or search any city.</li>
+          <li>Click <strong>Allow notifications</strong> if you want weather notification popups.</li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

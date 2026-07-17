@@ -13,6 +13,9 @@
 - Includes Settings for app name, creator name, YouTube channel, and Weather Switch.
 - Includes Credits with OFF FACTORY branding and GitHub profile link.
 - Includes a wizard-style home page with Google, Discord, email, and guest sign-in options.
+- Supports optional location access to show weather where the user lives.
+- Supports optional browser/desktop weather notifications.
+- Adds responsive styling for iOS and mobile browser use.
 - Configures Electron Builder NSIS wizard installer for Windows `.exe` output.
 - Includes a GitHub Actions workflow for building the installer on Windows.
 
