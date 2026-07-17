@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { CloudSun, Code2, PlayCircle, Search, Settings, Sparkles, Wand2 } from "lucide-react";
+import { CloudSun, Code2, Compass, Mail, PlayCircle, Search, Settings, ShieldCheck, Sparkles, Wand2 } from "lucide-react";
 import { describeWeather, findPlace, loadWeather, Place, WeatherReport, weatherIcon } from "./weather";
 
-type Tab = "weather" | "settings" | "credits";
+type Tab = "home" | "weather" | "settings" | "credits";
+type AuthProvider = "Google" | "Discord" | "Email" | "Guest";
 
 const defaultPlace: Place = {
   name: "New York",
@@ -16,11 +17,13 @@ const githubUrl = "https://github.com/offfactory";
 const youtubeFallback = "Add your YouTube channel in Settings";
 
 export default function App() {
-  const [tab, setTab] = useState<Tab>("weather");
+  const [tab, setTab] = useState<Tab>(() => (localStorage.getItem("signedIn") === "yes" ? "weather" : "home"));
   const [appName, setAppName] = useState(() => localStorage.getItem("appName") || "Weather Wizard");
   const [creatorName, setCreatorName] = useState(() => localStorage.getItem("creatorName") || "OFF FACTORY");
   const [youtubeUrl, setYoutubeUrl] = useState(() => localStorage.getItem("youtubeUrl") || "");
   const [weatherSwitch, setWeatherSwitch] = useState(() => localStorage.getItem("weatherSwitch") !== "off");
+  const [signedIn, setSignedIn] = useState(() => localStorage.getItem("signedIn") === "yes");
+  const [signedInWith, setSignedInWith] = useState(() => localStorage.getItem("signedInWith") || "");
   const [query, setQuery] = useState("New York");
   const [report, setReport] = useState<WeatherReport | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,7 +36,9 @@ export default function App() {
     localStorage.setItem("creatorName", creatorName);
     localStorage.setItem("youtubeUrl", youtubeUrl);
     localStorage.setItem("weatherSwitch", weatherSwitch ? "on" : "off");
-  }, [appName, creatorName, youtubeUrl, weatherSwitch]);
+    localStorage.setItem("signedIn", signedIn ? "yes" : "no");
+    localStorage.setItem("signedInWith", signedInWith);
+  }, [appName, creatorName, youtubeUrl, weatherSwitch, signedIn, signedInWith]);
 
   useEffect(() => {
     load(defaultPlace);
@@ -65,6 +70,18 @@ export default function App() {
     }
   }
 
+  function signIn(provider: AuthProvider) {
+    setSignedIn(true);
+    setSignedInWith(provider);
+    setTab("weather");
+  }
+
+  function signOut() {
+    setSignedIn(false);
+    setSignedInWith("");
+    setTab("home");
+  }
+
   return (
     <main className="app-shell">
       <div className="aurora aurora-one" />
@@ -81,6 +98,7 @@ export default function App() {
         </div>
 
         <nav className="tabs" aria-label="App sections">
+          <button className={tab === "home" ? "active" : ""} onClick={() => setTab("home")}><Compass size={18} /> Home</button>
           <button className={tab === "weather" ? "active" : ""} onClick={() => setTab("weather")}><CloudSun size={18} /> Weather</button>
           <button className={tab === "settings" ? "active" : ""} onClick={() => setTab("settings")}><Settings size={18} /> Settings</button>
           <button className={tab === "credits" ? "active" : ""} onClick={() => setTab("credits")}><Sparkles size={18} /> Credits</button>
@@ -102,10 +120,15 @@ export default function App() {
             <p>NSIS wizard setup, desktop shortcut, Start Menu shortcut, and EXE icon.</p>
           </div>
         </div>
+
+        {signedIn && (
+          <button className="signout-button" onClick={signOut}>Signed in with {signedInWith} · Sign out</button>
+        )}
       </aside>
 
       <section className="content panel">
-        {tab === "weather" && <WeatherTab report={report} loading={loading} error={error} enabled={weatherSwitch} />}
+        {tab === "home" && <HomeTab appName={appName} creatorName={creatorName} signedIn={signedIn} signedInWith={signedInWith} onSignIn={signIn} onStart={() => setTab(signedIn ? "weather" : "home")} />}
+        {tab === "weather" && (signedIn ? <WeatherTab report={report} loading={loading} error={error} enabled={weatherSwitch} /> : <HomeTab appName={appName} creatorName={creatorName} signedIn={signedIn} signedInWith={signedInWith} onSignIn={signIn} onStart={() => setTab("home")} />)}
         {tab === "settings" && (
           <SettingsTab
             appName={appName}
@@ -121,6 +144,47 @@ export default function App() {
         {tab === "credits" && <CreditsTab creatorName={creatorName} youtubeUrl={youtubeUrl} />}
       </section>
     </main>
+  );
+}
+
+function HomeTab({ appName, creatorName, signedIn, signedInWith, onSignIn, onStart }: { appName: string; creatorName: string; signedIn: boolean; signedInWith: string; onSignIn: (provider: AuthProvider) => void; onStart: () => void }) {
+  return (
+    <div className="home-page">
+      <section className="wizard-hero">
+        <div>
+          <p className="eyebrow">Wizard step 1</p>
+          <h2>{appName}</h2>
+          <p className="home-copy">Sign in or sign up, then cast live forecasts with the OFF FACTORY Weather Switch.</p>
+          <div className="wizard-steps">
+            <span className="done">1 Login</span>
+            <span>2 Search weather</span>
+            <span>3 Save your setup</span>
+          </div>
+        </div>
+        <img src="/weather-logo.svg" alt="Weather Wizard app icon" className="hero-logo" />
+      </section>
+
+      <section className="auth-panel">
+        <div>
+          <p className="eyebrow">Login or sign up</p>
+          <h3>{signedIn ? `Ready, signed in with ${signedInWith}` : "Choose your magic door"}</h3>
+          <p>Google and Discord buttons are launcher-ready placeholders for the desktop app. Guest mode works now without setup.</p>
+        </div>
+        <div className="auth-grid">
+          <button onClick={() => onSignIn("Google")}><ShieldCheck /> Continue with Google</button>
+          <button onClick={() => onSignIn("Discord")}><Sparkles /> Continue with Discord</button>
+          <button onClick={() => onSignIn("Email")}><Mail /> Sign up with email</button>
+          <button onClick={() => onSignIn("Guest")}><Wand2 /> Continue as guest</button>
+        </div>
+        <button className="primary-wide" onClick={onStart}>{signedIn ? "Open Weather Wizard" : "Pick a sign-in option above"}</button>
+      </section>
+
+      <section className="wizard-strip">
+        <div><strong>Wizard style</strong><span>Dark glass UI, magic weather icon, installer-ready identity.</span></div>
+        <div><strong>Desktop launcher</strong><span>Electron app with custom Weather Wizard `.exe` icon.</span></div>
+        <div><strong>Setup wizard</strong><span>NSIS installer creates desktop and Start Menu shortcuts.</span></div>
+      </section>
+    </div>
   );
 }
 

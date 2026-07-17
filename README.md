@@ -8,6 +8,7 @@ Weather Wizard is a polished Windows desktop weather app by **OFF FACTORY**.
 - Current conditions, hourly forecast, and 7-day forecast
 - Settings tab for app name, creator name, YouTube channel, and Weather Switch
 - Credits tab with OFF FACTORY branding and GitHub profile link
+- Wizard-style home page with login/sign-up options for Google, Discord, email, and guest mode
 - Windows `.exe` launcher and NSIS wizard installer configuration
 - GitHub Actions workflow to build the Windows installer on `windows-latest`
 - Custom app logo and Windows `.ico` icon used for launcher and installer branding

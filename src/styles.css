@@ -67,8 +67,29 @@ input { width: 100%; color: #eff7ff; background: transparent; border: 0; outline
 .search-card button:disabled { opacity: 0.55; cursor: not-allowed; }
 .mini-card { display: flex; gap: 12px; color: #d9eeff; }
 .mini-card p { margin: 5px 0 0; color: #a9bed2; font-size: 0.9rem; line-height: 1.45; }
+.signout-button { border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; background: rgba(255,255,255,0.07); color: #dff4ff; padding: 12px 14px; cursor: pointer; }
 
 .content { padding: 26px; overflow: hidden; }
+.home-page { height: 100%; display: grid; grid-template-rows: auto auto 1fr; gap: 18px; }
+.wizard-hero { display: flex; justify-content: space-between; align-items: center; gap: 24px; min-height: 245px; border-radius: 28px; padding: 28px; background: linear-gradient(135deg, rgba(38,177,255,0.24), rgba(255,203,87,0.16)); border: 1px solid rgba(255,255,255,0.16); overflow: hidden; }
+.wizard-hero h2 { font-size: 4.8rem; line-height: 0.92; margin: 8px 0 12px; letter-spacing: -0.08em; }
+.home-copy { color: #c8d9e7; font-size: 1.15rem; max-width: 560px; line-height: 1.55; }
+.hero-logo { width: 180px; height: 180px; filter: drop-shadow(0 24px 40px rgba(255, 205, 87, 0.25)); }
+.wizard-steps { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.wizard-steps span { border: 1px solid rgba(255,255,255,0.13); background: rgba(4,13,25,0.35); color: #c7d9e8; padding: 9px 12px; border-radius: 999px; font-weight: 800; }
+.wizard-steps .done { background: linear-gradient(135deg, #31b6ff, #ffd15c); color: #07101f; }
+.auth-panel, .wizard-strip { border-radius: 24px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.11); padding: 18px; }
+.auth-panel { display: grid; grid-template-columns: 1fr 1.2fr; gap: 18px; align-items: start; }
+.auth-panel h3 { font-size: 1.8rem; margin-bottom: 8px; }
+.auth-panel p { color: #a9bed2; line-height: 1.5; }
+.auth-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.auth-grid button, .primary-wide { border: 0; cursor: pointer; border-radius: 18px; padding: 14px 15px; font-weight: 900; }
+.auth-grid button { display: flex; align-items: center; gap: 10px; justify-content: center; background: rgba(255,255,255,0.09); color: #eff7ff; border: 1px solid rgba(255,255,255,0.11); }
+.primary-wide { grid-column: 2; width: 100%; background: linear-gradient(135deg, #31b6ff, #ffd15c); color: #07101f; }
+.wizard-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-content: start; }
+.wizard-strip div { background: rgba(4,13,25,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 15px; }
+.wizard-strip strong, .wizard-strip span { display: block; }
+.wizard-strip span { color: #a9bed2; margin-top: 6px; line-height: 1.4; }
 .weather-grid { height: 100%; display: grid; grid-template-rows: auto auto 1fr; gap: 18px; }
 .hero-weather { position: relative; min-height: 245px; border-radius: 28px; padding: 28px; overflow: hidden; background: linear-gradient(135deg, rgba(38, 177, 255, 0.25), rgba(255, 203, 87, 0.16)); border: 1px solid rgba(255,255,255,0.16); }
 .hero-weather h2 { font-size: 6rem; line-height: 0.9; margin: 8px 0; letter-spacing: -0.08em; }
