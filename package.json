@@ -52,7 +52,7 @@
           ]
         }
       ],
-      "icon": "public/weather-logo.svg"
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -60,9 +60,9 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Weather Wizard",
-      "installerIcon": "public/weather-logo.svg",
-      "uninstallerIcon": "public/weather-logo.svg",
-      "installerHeaderIcon": "public/weather-logo.svg",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
       "deleteAppDataOnUninstall": false
     }
   }

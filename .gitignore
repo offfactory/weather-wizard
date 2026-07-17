@@ -3,7 +3,6 @@ dist/
 dist-electron/
 release/
 package-lock.json
-build/icon.ico
 public/icon.png
 *.log
 .DS_Store
