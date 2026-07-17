@@ -36,6 +36,7 @@
     "appId": "com.offfactory.weatherwizard",
     "productName": "Weather Wizard",
     "executableName": "Weather Wizard",
+    "artifactName": "Weather-Wizard-Setup.${ext}",
     "directories": {
       "output": "release",
       "buildResources": "build"
