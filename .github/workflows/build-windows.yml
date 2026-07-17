@@ -24,16 +24,23 @@ jobs:
         run: npm run check
       - name: Build installer
         run: npm run dist:win
+      - name: Create launcher zip
+        shell: pwsh
+        run: Compress-Archive -Path "release/win-unpacked/*" -DestinationPath "release/Weather-Wizard-Launcher.zip" -Force
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
         with:
           name: weather-wizard-windows-installer
-          path: release/*.exe
+          path: |
+            release/Weather-Wizard-Setup.exe
+            release/Weather-Wizard-Launcher.zip
       - name: Publish latest release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           name: Weather Wizard Latest
-          files: release/*.exe
+          files: |
+            release/Weather-Wizard-Setup.exe
+            release/Weather-Wizard-Launcher.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

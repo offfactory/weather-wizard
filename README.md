@@ -35,6 +35,7 @@ The most reliable path is GitHub Actions on Windows:
 
 1. Push to `main` or run **Build Windows Installer** manually.
 2. Download the `weather-wizard-windows-installer` artifact from the workflow run.
+3. Use `Weather-Wizard-Setup.exe` for the installer, or unzip `Weather-Wizard-Launcher.zip` and run `Weather Wizard.exe` directly.
 
 The launcher executable is named `Weather Wizard.exe` inside the Windows install.
 
